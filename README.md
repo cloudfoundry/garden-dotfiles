@@ -45,6 +45,10 @@
    bash-it enable completion bash-it git system
    ```
 
+## Neovim + Go
+
+1. Read the [cheatsheet](./nvim-go.md) for vim shortcuts.
+
 ## TODO
 
 1. git autocomplete in bash

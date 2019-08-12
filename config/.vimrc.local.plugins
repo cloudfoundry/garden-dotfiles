@@ -2,3 +2,6 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'ruanyl/vim-gh-line'
 Plug 'robertmeta/nofrils'
 Plug 'avakhov/vim-yaml'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'neoclide/coc-json', {'tag': '*'}
+Plug 'neoclide/coc-yaml', {'tag': '*'}

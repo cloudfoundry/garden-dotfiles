@@ -5,6 +5,14 @@
   - name: clone vim config
     git: repo=https://github.com/luan/vimfiles dest=~/.vim
 
+  - name: clone saibing's gopls
+    git: repo=https://github.com/saibing/tools version=bingo dest=/tmp/tools
+
+  - name: install saibing gopls
+    command: go install
+    args:
+      chdir: /tmp/tools/cmd/gopls
+
   - name: install vim config
     command: ~/.vim/update
 
@@ -73,6 +81,8 @@
     - {target: ~/.vimrc.local, src: "{{ansible_env.PWD}}/config/.vimrc.local"}
     - {target: ~/.vimrc.local.before, src: "{{ansible_env.PWD}}/config/.vimrc.local.before"}
     - {target: ~/.vimrc.local.plugins, src: "{{ansible_env.PWD}}/config/.vimrc.local.plugins"}
+    - {target: ~/.vim/coc-settings.json, src: "{{ansible_env.PWD}}/config/coc-settings.json"}
+    - {target: ~/.vim/config/plugin/coc.vim, src: "{{ansible_env.PWD}}/config/coc.vim"}
     - {target: ~/bin/load-key, src: "{{ansible_env.PWD}}/executables/load-key"}
     - {target: ~/bin/gotta-push-em-all, src: "{{ansible_env.PWD}}/executables/gotta-push-em-all.sh"}
     - {target: ~/bin/get-groot-env.sh, src: "{{ansible_env.PWD}}/executables/get-groot-env.sh"}

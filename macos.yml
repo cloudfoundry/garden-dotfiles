@@ -23,8 +23,10 @@
       - bosh-cli
       - cf-cli
       - chruby
+      - cmake
       - coreutils
       - ctags
+      - curl
       - direnv
       - docker
       - docker-machine
@@ -38,10 +40,13 @@
       - jsonpp
       - lastpass-cli
       - libgit2
+      - lua
+      - luarocks
       - neovim
+      - npm
       - pstree
-      - python@2
       - python3
+      - python@2
       - reattach-to-user-namespace
       - ripgrep
       - ruby-install
@@ -56,6 +61,7 @@
       - vim
       - watch
       - wget
+      - yarn
       state: latest
 
   - name: install Homebrew casks

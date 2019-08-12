@@ -7,6 +7,11 @@ call camelcasemotion#CreateMotionMappings('<leader>')
 " Ignore vendor directory
 set wildignore+=vendor
 
+" let coc.nvim do code completion and doc lookup
+let g:go_code_completion_enabled = 0
+
+autocmd FileType go nunmap <buffer> K
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin configuration: fzf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -31,14 +36,8 @@ call s:define_fzf_command()
 " Plugin configuration: deoplete
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Autocomplete: Do not insert any text for a match until the user selects a
-" match from the menu.
-set completeopt+=noinsert
-
-inoremap <silent> <CR> <C-r>=<SID>apply_and_close_cr()<CR>
-function! s:apply_and_close_cr()
-  return pumvisible() ? "\<C-y>" : "\<CR>"
-endfunction
+" disable deoplete in favour of coc.nvim
+let g:deoplete#enable_at_startup = 0
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Spelling
@@ -53,5 +52,4 @@ set noswapfile
 set nobackup
 set nowb
 
-let g:go_def_mode='gopls'
-let g:go_info_mode='gopls'
+runtime config/plugin/coc.vim
