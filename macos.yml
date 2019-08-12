@@ -56,6 +56,9 @@
       - vim
       - watch
       - wget
+      - curl
+      - npm
+      - yarn
       state: latest
 
   - name: install Homebrew casks
