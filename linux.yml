@@ -1,0 +1,157 @@
+---
+- hosts: all
+  tags: [linux]
+  vars:
+    downloads_dir: /tmp/downloads
+    git_apps:
+      chruby: https://github.com/postmodern/chruby.git
+      ruby-install:  https://github.com/postmodern/ruby-install.git
+      fasd: https://github.com/clvv/fasd.git
+  tasks:
+  - name: add apt repositories
+    become: yes
+    become_method: sudo
+    apt_repository: repo={{ item }}
+    with_items:
+    - ppa:git-core/ppa
+    - ppa:neovim-ppa/{{ [ansible_distribution_release] | issubset(['xenial', 'yakkety']) | ternary('stable', 'unstable') }}
+
+  - name: add Google Cloud repository
+    become: yes
+    become_method: sudo
+    lineinfile: dest=/etc/apt/sources.list.d/google-cloud-sdk.list line='deb https://packages.cloud.google.com/apt cloud-sdk-{{ansible_distribution_release}} main' create=yes
+
+  - name: add Google Cloud repository key
+    become: yes
+    become_method: sudo
+    apt_key: url=https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+  - name: add Cloud Foundry Foundation repository
+    become: yes
+    become_method: sudo
+    lineinfile: dest=/etc/apt/sources.list.d/cloud-foundry-foundation.list line='deb http://packages.cloudfoundry.org/debian stable main' create=yes
+
+  - name: add Cloud Foundry Foundation repository key
+    become: yes
+    become_method: sudo
+    apt_key: url=https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key
+
+  - name: add VirtualBox repository
+    become: yes
+    become_method: sudo
+    lineinfile: dest=/etc/apt/sources.list.d/virtualbox.list line="deb http://download.virtualbox.org/virtualbox/debian {{ansible_distribution_release}} contrib" create=yes
+
+  - name: add VirtualBox repository key
+    become: yes
+    become_method: sudo
+    apt_key: url=https://www.virtualbox.org/download/oracle_vbox_2016.asc
+
+  - name: install apt packages
+    become: yes
+    become_method: sudo
+    apt: name={{ item }} state=latest update_cache=yes
+    with_items:
+    - ack-grep
+    - build-essential
+    - cf-cli
+    - cmake
+    - curl
+    - direnv
+    - exuberant-ctags
+    - fonts-inconsolata
+    - git
+    - google-cloud-sdk
+    - htop
+    - lastpass-cli
+    - mercurial
+    - neovim
+    - pkg-config
+    - python-dev
+    - python-pip
+    - python3-dev
+    - python3-pip
+    - shellcheck
+    - silversearcher-ag
+    - tree
+    - vim
+    - vim-nox
+    - virtualbox-5.1
+    - wget
+    - xclip
+    - ngrok-client
+    # For tmux
+    - libevent-dev
+    - libncurses5-dev
+
+  - name: install Vagrant
+    become: yes
+    become_method: sudo
+    apt:
+      deb: https://releases.hashicorp.com/vagrant/1.9.7/vagrant_1.9.7_x86_64.deb
+
+  - name: install neovim pip package
+    pip: name=neovim state=latest extra_args=--user
+
+  - name: install pip3
+    pip: name=pip state=latest extra_args=--user executable=/usr/bin/pip3
+
+  - name: install neovim pip3 package
+    pip: name=neovim state=latest extra_args=--user executable=~/.local/bin/pip3
+
+  - name: ensure downloads directory exists
+    file: path={{downloads_dir}} state=directory
+
+  - name: download tmux
+    get_url: url=https://github.com/tmux/tmux/releases/download/2.4/tmux-2.4.tar.gz dest={{downloads_dir}}/tmux-2.4.tar.gz
+
+  - name: extract tmux
+    unarchive: copy=no src={{downloads_dir}}/tmux-2.4.tar.gz dest={{downloads_dir}} creates={{downloads_dir}}/tmux-2.4
+
+  - name: check tmux installed
+    command: tmux -V
+    register: tmux_version
+    failed_when: tmux_version.rc != 0 and tmux_version.rc != 127
+
+  - name: configure tmux
+    command: ./configure chdir={{downloads_dir}}/tmux-2.4
+    when: tmux_version.stdout != "tmux 2.4"
+
+  - name: compile tmux
+    make: chdir={{downloads_dir}}/tmux-2.4
+    when: tmux_version.stdout != "tmux 2.4"
+
+  - name: install tmux
+    become: yes
+    become_method: sudo
+    make: target=install chdir={{downloads_dir}}/tmux-2.4
+    when: tmux_version.stdout != "tmux 2.4"
+
+  - name: download go
+    get_url: url=https://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz dest={{downloads_dir}}/go.tar.gz
+
+  - name: extract go
+    become: yes
+    become_method: sudo
+    unarchive: copy=no src={{downloads_dir}}/go.tar.gz dest=/usr/local creates=/usr/local/go
+
+  - name: ensure git-apps directory exists
+    file: path=~/git-apps state=directory
+
+  - name: checkout git apps
+    git: repo={{ item.value }} dest=~/git-apps/{{ item.key }} force=yes
+    with_dict: "{{ git_apps }}"
+
+  - name: install git apps
+    become: yes
+    become_method: sudo
+    make: target=install chdir={{ ansible_env.HOME }}/git-apps/{{ item.key }}
+    with_dict: "{{ git_apps }}"
+
+  - name: download git duet
+    get_url: url=https://github.com/git-duet/git-duet/releases/download/0.5.2/linux_amd64.tar.gz dest={{downloads_dir}}/git-duet.tar.gz
+
+  - name: install git duet
+    unarchive: copy=no src={{downloads_dir}}/git-duet.tar.gz dest={{ ansible_env.HOME }}/.local/bin creates={{ ansible_env.HOME }}/.local/bin/git-duet
+
+  - name: install bosh cli
+    get_url: url=https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.28-linux-amd64 dest={{ansible_env.HOME}}/.local/bin/bosh checksum=sha1:7b7629fcdf8839cf29bf25d97e8ea6beb3b9a7b2 mode=a+x

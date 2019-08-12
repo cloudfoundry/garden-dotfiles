@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+concourse_pass=$(lpass show --notes "Shared-Garden/Concourse CI Basic Auth Password")
+
+concourse-flake-hunter -c https://garden.ci.cf-app.com -n main -u garden -p $concourse_pass search "$@"

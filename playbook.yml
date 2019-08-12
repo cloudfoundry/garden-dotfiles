@@ -1,0 +1,4 @@
+---
+- import_playbook: linux.yml
+- import_playbook: macos.yml
+- import_playbook: common.yml

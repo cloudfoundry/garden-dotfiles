@@ -1,0 +1,78 @@
+---
+- hosts: all
+  tags: [macos]
+  tasks:
+  - name: update brew
+    homebrew: update_homebrew=yes
+
+  - name: add Homebrew taps
+    homebrew_tap: name={{item}}
+    with_items:
+    - homebrew/cask-fonts
+    - cloudfoundry/tap
+    - git-duet/tap
+    - neovim/neovim
+
+  - name: install Homebrew packages
+    homebrew:
+      name:
+      - ack
+      - ag
+      - awscli
+      - bash
+      - bosh-cli
+      - cf-cli
+      - chruby
+      - coreutils
+      - ctags
+      - direnv
+      - docker
+      - docker-machine
+      - fasd
+      - fzf
+      - git
+      - git-duet
+      - go
+      - htop
+      - jq
+      - jsonpp
+      - lastpass-cli
+      - libgit2
+      - neovim
+      - pstree
+      - python@2
+      - python3
+      - reattach-to-user-namespace
+      - ripgrep
+      - ruby-install
+      - shellcheck
+      - ssh-copy-id
+      - sshuttle
+      - terraform
+      - tig
+      - tmate
+      - tmux
+      - tree
+      - vim
+      - watch
+      - wget
+      state: latest
+
+  - name: install Homebrew casks
+    homebrew_cask: name={{item}} install_options=appdir=/Applications
+    with_items:
+    - docker
+    - flycut
+    - font-inconsolata
+    - google-cloud-sdk
+    - iterm2
+    - shiftit
+    - vagrant
+    - virtualbox
+    - ngrok
+
+  - name: install neovim pip package
+    pip: name=neovim state=latest
+
+  - name: install neovim pip3 package
+    pip: name=neovim state=latest executable=/usr/local/bin/pip3

@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+set -e
+
+HOMETIME="18:00:00"
+LASTPASS_NAME="$1"
+HOURS="$2"
+file_name=$(echo $LASTPASS_NAME | sed "s|/|-|g")
+PRIVATE_KEY="/tmp/$file_name"
+
+main() {
+  if [ ! $(ssh-add -l | grep -o -e $file_name) ]
+  then
+    trap delete_private_key_file EXIT
+    save_private_key_to_file
+    add_private_key
+  else
+    echo "Key already exists"
+  fi
+}
+
+save_private_key_to_file() {
+  delete_private_key_file
+  lpass show "$LASTPASS_NAME" --notes > "$PRIVATE_KEY"
+  chmod 400 "$PRIVATE_KEY"
+}
+
+add_private_key() {
+    if [ -z "$HOURS" ]
+    then
+      add_private_key_until_hometime
+    else
+      add_private_key_for_x_hours
+    fi
+}
+
+add_private_key_until_hometime() {
+  local now="$(date +%s)"
+  local until="$( date -j -f "%T" $HOMETIME +%s 2> /dev/null || date -d $HOMETIME +%s )"
+  local seconds_remaining="$( expr $until - $now )"
+
+  if [ "$seconds_remaining" -lt 1 ]
+  then
+    echo "$HOMETIME is history. Go home!"
+    exit 1
+  else
+    echo "Adding $LASTPASS_NAME until $HOMETIME..."
+    ssh-add -t "$seconds_remaining" "$PRIVATE_KEY"
+  fi
+}
+
+add_private_key_for_x_hours() {
+  echo "Adding $LASTPASS_NAME for $HOURS hours..."
+  ssh-add -t "${HOURS}h" "$PRIVATE_KEY"
+}
+
+delete_private_key_file() {
+  rm -f "$PRIVATE_KEY"
+}
+
+main

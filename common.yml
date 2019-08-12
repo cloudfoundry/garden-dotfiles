@@ -1,0 +1,105 @@
+---
+- hosts: all
+  tags: [linux, macos]
+  tasks:
+  - name: clone vim config
+    git: repo=https://github.com/luan/vimfiles dest=~/.vim
+
+  - name: install vim config
+    command: ~/.vim/update
+
+  - name: get bash-it
+    git:
+      repo: https://github.com/Bash-it/bash-it.git
+      dest: ~/.bash_it
+
+  - name: install bash-it
+    command: ~/.bash_it/install.sh --silent
+
+  - name: install concourse-flake-hunter
+    command: go get -u github.com/masters-of-cats/concourse-flake-hunter
+
+  - name: install counterfeiter
+    command: go get -u github.com/maxbrunsfeld/counterfeiter
+
+  # - name: enable bash-it plugins
+  #   shell: source ~/.bash_profile && bash-it enable plugin {{item}}
+  #   args:
+  #     executable: /bin/bash
+  #   with_items:
+  #   - base
+  #   - chruby
+  #   - chruby-auto
+  #   - fzf
+  #   - git
+  #
+  # - name: enable bash-it completions
+  #   shell: source ~/.bash_profile && bash-it enable completion {{item}}
+  #   args:
+  #     executable: /bin/bash
+  #   with_items:
+  #   - bash-it
+  #   - git
+  #   - system
+
+  - name: get TPM
+    git:
+      repo: https://github.com/tmux-plugins/tpm
+      dest: ~/.tmux/plugins/tpm
+
+  - file: path=~/bin state=directory mode=0755
+
+  - name: set up symlinks
+    file:
+      path: "{{item.target}}"
+      src: "{{item.src}}"
+      state: link
+      force: yes
+    with_items:
+    - {target: ~/.bash_it/custom/bosh_concourse.bash, src: "{{ansible_env.PWD}}/config/bash/bosh_concourse.bash"}
+    - {target: ~/.bash_it/custom/brew.bash, src: "{{ansible_env.PWD}}/config/bash/brew.bash"}
+    - {target: ~/.bash_it/custom/env.bash, src: "{{ansible_env.PWD}}/config/bash/env.bash"}
+    - {target: ~/.bash_it/custom/git.bash, src: "{{ansible_env.PWD}}/config/bash/git.bash"}
+    - {target: ~/.bash_it/custom/ngrok.bash, src: "{{ansible_env.PWD}}/config/bash/ngrok.bash"}
+    - {target: ~/.bash_it/custom/profile.bash, src: "{{ansible_env.PWD}}/config/bash/profile.bash"}
+    - {target: ~/.bash_it/custom/terminal.bash, src: "{{ansible_env.PWD}}/config/bash/terminal.bash"}
+    - {target: ~/.bash_it/custom/bosh.bash, src: "{{ansible_env.PWD}}/config/bash/bosh.bash"}
+    - {target: ~/.git-authors, src: "{{ansible_env.PWD}}/config/.git-authors"}
+    - {target: ~/.gitconfig-shared, src: "{{ansible_env.PWD}}/config/.gitconfig-shared"}
+    - {target: ~/.hushlogin, src: "{{ansible_env.PWD}}/config/.hushlogin"}
+    - {target: ~/.ruby-version, src: "{{ansible_env.PWD}}/config/.ruby-version"}
+    - {target: ~/.tmate.conf, src: "{{ansible_env.PWD}}/config/tmate.conf"}
+    - {target: ~/.tmux.conf, src: "{{ansible_env.PWD}}/config/tmux.conf"}
+    - {target: ~/.vimrc.local, src: "{{ansible_env.PWD}}/config/.vimrc.local"}
+    - {target: ~/.vimrc.local.before, src: "{{ansible_env.PWD}}/config/.vimrc.local.before"}
+    - {target: ~/.vimrc.local.plugins, src: "{{ansible_env.PWD}}/config/.vimrc.local.plugins"}
+    - {target: ~/bin/load-key, src: "{{ansible_env.PWD}}/executables/load-key"}
+    - {target: ~/bin/gotta-push-em-all, src: "{{ansible_env.PWD}}/executables/gotta-push-em-all.sh"}
+    - {target: ~/bin/get-groot-env.sh, src: "{{ansible_env.PWD}}/executables/get-groot-env.sh"}
+    - {target: ~/bin/flake-hunter, src: "{{ansible_env.PWD}}/executables/flake-hunter"}
+    - {target: ~/bin/replace-tag, src: "{{ansible_env.PWD}}/executables/replace-tag"}
+
+  - name: ~/.gitconfig
+    blockinfile:
+      path: ~/.gitconfig
+      create: yes
+      block: |
+        [include]
+          path = ~/.gitconfig-shared
+
+  - name: install git-co-authored-by-hook
+    environment:
+      GIT_DUET_CO_AUTHORED_BY: 1
+    command: bash -c "git solo \"$( grep authors -A 1 ~/.git-authors | tail -1 | cut -d ':' -f 1 | tr -d '[:space:]' )\""
+
+  - name: clone garden repos
+    git:
+      update: no
+      repo: git@github.com:cloudfoundry/{{item}}.git
+      dest: ~/workspace/{{item}}
+    with_items:
+    - groot
+    - garden-ci
+    - garden-dockerfiles
+    - garden-dotfiles
+    - garden-runc-release
