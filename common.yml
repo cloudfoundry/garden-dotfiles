@@ -2,11 +2,17 @@
 - hosts: all
   tags: [linux, macos]
   tasks:
-  - name: clone vim config
-    git: repo=https://github.com/luan/vimfiles dest=~/.vim
+  - name: Check if luan/vimfiles is installed
+    stat: path=~/.config/nvim
+    register: nvimconf
 
-  - name: install vim config
-    command: ~/.vim/update
+  - fail:
+      msg: "You seem to have luan/vimfiles installed. This playbook is going to install luan/nvim which is incompatible with vimfiles. \
+            Please run 'unlink ~/.config/nvim' before runnig this playbook."
+    when: nvimconf.stat.islnk is defined and nvimconf.stat.islnk
+
+  - name: clone vim config
+    git: repo=https://github.com/luan/nvim dest=~/.config/nvim
 
   - name: get bash-it
     git:
@@ -70,9 +76,9 @@
     - {target: ~/.ruby-version, src: "{{ansible_env.PWD}}/config/.ruby-version"}
     - {target: ~/.tmate.conf, src: "{{ansible_env.PWD}}/config/tmate.conf"}
     - {target: ~/.tmux.conf, src: "{{ansible_env.PWD}}/config/tmux.conf"}
-    - {target: ~/.vimrc.local, src: "{{ansible_env.PWD}}/config/.vimrc.local"}
-    - {target: ~/.vimrc.local.before, src: "{{ansible_env.PWD}}/config/.vimrc.local.before"}
-    - {target: ~/.vimrc.local.plugins, src: "{{ansible_env.PWD}}/config/.vimrc.local.plugins"}
+    - {target: ~/.config/nvim/user/before.vim, src: "{{ansible_env.PWD}}/config/user/before.vim"}
+    - {target: ~/.config/nvim/user/plug.vim, src: "{{ansible_env.PWD}}/config/user/plug.vim"}
+    - {target: ~/.config/nvim/user/after.vim, src: "{{ansible_env.PWD}}/config/user/after.vim"}
     - {target: ~/bin/load-key, src: "{{ansible_env.PWD}}/executables/load-key"}
     - {target: ~/bin/gotta-push-em-all, src: "{{ansible_env.PWD}}/executables/gotta-push-em-all.sh"}
     - {target: ~/bin/get-groot-env.sh, src: "{{ansible_env.PWD}}/executables/get-groot-env.sh"}
