@@ -67,6 +67,7 @@
     - docker
     - flycut
     - font-inconsolata
+    - font-inconsolata-nerd-font
     - google-cloud-sdk
     - iterm2
     - shiftit

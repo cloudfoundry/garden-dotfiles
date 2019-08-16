@@ -30,6 +30,7 @@
 1. Hide the dock.
 1. Speed up key repeat.
 1. Make iTerm append Esc to Alt key. Open iTerm -> Preferences -> Profiles -> Keys and change the Left and Right Alt key settings from Normal to Esc+. This restores alt+f, alt+backspace etc.
+1. Make sure you set a Nerd Font as your non-ascii font in iTerm -> Preferences -> Profiles -> Text -> Non-ASCII Font (Inconsolata Mono Nerd Font comes with dotfiles)
 1. Do the things in common post-install below.
 
 ## Common post-install
