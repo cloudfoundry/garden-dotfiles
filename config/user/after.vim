@@ -95,3 +95,26 @@ nmap <silent> <leader>w= :wincmd =<CR>
 nmap <silent> <leader>wx :wincmd x<CR>
 
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" running custom tests
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! ScriptTestTransform(cmd) abort
+  let l:command = a:cmd
+
+  if stridx(a:cmd, 'ginkgo') > -1
+
+    let l:commandTail = split(a:cmd)[-1]
+    if filereadable('script/test')
+      let l:command = 'script/test ' . l:commandTail
+    elseif filereadable('scripts/test')
+      let l:command = 'scripts/test ' . l:commandTail
+    elseif filereadable('scripts/test-unit')
+      let l:command = 'scripts/test-unit ' . l:commandTail
+    end
+  end
+
+  return l:command
+endfunction
+
+let g:test#custom_transformations = {'scripttest': function('ScriptTestTransform')}
+let g:test#transformation = 'scripttest'
