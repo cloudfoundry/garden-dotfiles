@@ -118,3 +118,8 @@ endfunction
 
 let g:test#custom_transformations = {'scripttest': function('ScriptTestTransform')}
 let g:test#transformation = 'scripttest'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ALE linting with OS set to linux and CGO ignored
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ale_command_wrapper = 'GOOS=linux CGO_ENABLED=0 %*'
