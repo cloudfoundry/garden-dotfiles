@@ -88,11 +88,11 @@ let g:go_info_mode='gopls'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Windows
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Equal Size Windows
-let g:lmap['w'] = { 'name': 'Window' }
-nmap <silent> <leader>w= :wincmd =<CR>
-" Swap Windows
-nmap <silent> <leader>wx :wincmd x<CR>
+let g:lmap['w'] = { 'name': 'Windows' }
+let g:lmap.w['='] = [':wincmd =', 'Equal']
+let g:lmap.w['x'] = [':wincmd x', 'Swap']
+let g:lmap.w['n'] = [':bnext', 'Next buf']
+let g:lmap.w['p'] = [':bprev', 'Prev buf']
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
