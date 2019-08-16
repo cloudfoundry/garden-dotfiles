@@ -62,12 +62,12 @@ set wildignore+=vendor
 
 " Autocomplete: Do not insert any text for a match until the user selects a
 " match from the menu.
-" set completeopt+=noinsert
+set completeopt+=noinsert
 
-" inoremap <silent> <CR> <C-r>=<SID>apply_and_close_cr()<CR>
-" function! s:apply_and_close_cr()
-"   return pumvisible() ? "\<C-y>" : "\<CR>"
-" endfunction
+inoremap <silent> <CR> <C-r>=<SID>apply_and_close_cr()<CR>
+function! s:apply_and_close_cr()
+  return pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Spelling
