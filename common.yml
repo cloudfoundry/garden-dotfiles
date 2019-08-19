@@ -102,6 +102,7 @@
     - {target: ~/bin/get-groot-env.sh, src: "{{ansible_env.PWD}}/executables/get-groot-env.sh"}
     - {target: ~/bin/flake-hunter, src: "{{ansible_env.PWD}}/executables/flake-hunter"}
     - {target: ~/bin/replace-tag, src: "{{ansible_env.PWD}}/executables/replace-tag"}
+    - {target: ~/.local/share/nvim/go/bin, src: "{{ansible_env.PWD}}/executables/linux-goimports"}
 
   - name: ~/.gitconfig
     blockinfile:
