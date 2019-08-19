@@ -24,18 +24,12 @@
 
   - name: install concourse-flake-hunter
     command: go get -u github.com/masters-of-cats/concourse-flake-hunter
-    environment:
-      GO111MODULE: off
 
   - name: install counterfeiter
     command: go get -u github.com/maxbrunsfeld/counterfeiter
-    environment:
-      GO111MODULE: off
 
   - name: install grootsay
     command: go get -u github.com/fouralarmfire/grootsay
-    environment:
-      GO111MODULE: off
 
   # - name: enable bash-it plugins
   #   shell: source ~/.bash_profile && bash-it enable plugin {{item}}
