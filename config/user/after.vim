@@ -106,9 +106,8 @@ let g:lmap.w['p'] = [':bprev', 'Prev buf']
 function! ScriptTestTransform(cmd) abort
   let l:command = a:cmd
 
-  if stridx(a:cmd, 'ginkgo') > -1
-
-    let l:commandTail = split(a:cmd)[-1]
+  let l:commandTail = split(a:cmd)[-1]
+  if &filetype == 'go'
     if filereadable('script/test')
       let l:command = 'script/test ' . l:commandTail
     elseif filereadable('scripts/test')
