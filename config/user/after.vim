@@ -129,4 +129,4 @@ let g:test#transformation = 'scripttest'
 let g:ale_command_wrapper = 'GOOS=linux CGO_ENABLED=0 %*'
 
 let g:startify_custom_header =
-        \ map(systemlist('fortune | grootsay'), '"   ". v:val')
+        \ map(systemlist('fortune | grootsay'), '"               ". v:val')
