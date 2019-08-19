@@ -25,10 +25,12 @@
       - chruby
       - coreutils
       - ctags
+      - curl
       - direnv
       - docker
       - docker-machine
       - fasd
+      - fortune
       - fzf
       - git
       - git-duet
@@ -39,9 +41,10 @@
       - lastpass-cli
       - libgit2
       - neovim
+      - npm
       - pstree
-      - python@2
       - python3
+      - python@2
       - reattach-to-user-namespace
       - ripgrep
       - ruby-install
@@ -56,8 +59,6 @@
       - vim
       - watch
       - wget
-      - curl
-      - npm
       - yarn
       state: latest
 
