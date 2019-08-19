@@ -32,6 +32,11 @@ augroup END
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Golang
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" remove default coc-nvim pre-write organizeImport and use vim-go goimports
+" instead
+autocmd! BufWritePre *.go
+let g:go_fmt_autosave = 1
+let g:go_fmt_experimental = 0
 
 " Ignore vendor directory
 set wildignore+=vendor
