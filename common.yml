@@ -11,8 +11,23 @@
             Please run 'unlink ~/.config/nvim' before runnig this playbook."
     when: nvimconf.stat.islnk is defined and nvimconf.stat.islnk
 
+  - name: Check if we need to back up any previous state
+    stat: path=~/.vim
+    register: vimconf
+
+  - name: clean up old config
+    shell: mv {{item}} {{item}}.bak
+    when: nvimconf.stat.isdir is defined and nvimconf.stat.isdir
+    ignore_errors: yes
+    with_items:
+    - ~/.vim
+    - ~/.local/share/nvim
+
   - name: clone vim config
     git: repo=https://github.com/luan/nvim dest=~/.config/nvim
+
+  - name: install vim plugins and binaries
+    command: nvim --headless +PlugInstall +PlugUpdate +GoInstallBinaries +qall
 
   - name: get bash-it
     git:
