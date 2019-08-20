@@ -1,6 +1,5 @@
 ## Everything related to user profile goes here.
 # TODO decouple shell theme from luan/vimfiles
-source $HOME/.vim/scripts/base16-shell/scripts/base16-monokai.sh
 
 eval "$(fasd --init auto)"
 eval "$(direnv hook bash)"
