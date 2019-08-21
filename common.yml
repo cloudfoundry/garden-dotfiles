@@ -27,7 +27,7 @@
     git: repo=https://github.com/luan/nvim dest=~/.config/nvim
 
   - name: install vim plugins and binaries
-    command: nvim --headless +PlugInstall +PlugUpdate +GoInstallBinaries +qall
+    command: nvim --headless +PlugInstall +PlugUpdate +GoUpdateBinaries +qall
 
   - name: get bash-it
     git:
