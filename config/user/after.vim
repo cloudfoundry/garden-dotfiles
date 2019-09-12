@@ -32,15 +32,10 @@ augroup END
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Golang
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" remove default coc-nvim pre-write organizeImport and use vim-go goimports
-" instead
-autocmd! BufWritePre *.go
-let g:go_fmt_autosave = 1
-let g:go_fmt_experimental = 0
-let g:go_fmt_command = 'linux-goimports'
 
 " Ignore vendor directory
 set wildignore+=vendor
+let $PATH = g:go_bin_path . ':' . $PATH
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin configuration: fzf
@@ -123,11 +118,6 @@ endfunction
 
 let g:test#custom_transformations = {'scripttest': function('ScriptTestTransform')}
 let g:test#transformation = 'scripttest'
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ALE linting with OS set to linux and CGO ignored
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:ale_command_wrapper = 'GOOS=linux CGO_ENABLED=0 %*'
 
 let g:startify_custom_header =
         \ map(systemlist('fortune | grootsay'), '"               ". v:val')

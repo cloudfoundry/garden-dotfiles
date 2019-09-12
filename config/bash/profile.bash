@@ -1,11 +1,10 @@
 ## Everything related to user profile goes here.
-# TODO decouple shell theme from luan/vimfiles
 
 eval "$(fasd --init auto)"
 eval "$(direnv hook bash)"
 
 # Alias
-alias vim='nvim'
+alias vim='GOOS=linux CGO_ENABLED=0 nvim'
 
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
