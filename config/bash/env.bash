@@ -13,3 +13,6 @@ export LPASS_AGENT_TIMEOUT=14400
 
 # Get rid of useless bash_it clock emoji
 export THEME_SHOW_CLOCK_CHAR=false
+
+# Get rid of the annoying bash replacement message in MacOS Catalina
+export BASH_SILENCE_DEPRECATION_WARNING=1
