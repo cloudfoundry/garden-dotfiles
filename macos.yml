@@ -20,6 +20,7 @@
       - ag
       - awscli
       - bash
+      - bash-completion@2
       - bosh-cli
       - cf-cli
       - chruby
@@ -40,6 +41,7 @@
       - jsonpp
       - lastpass-cli
       - libgit2
+      - kubectl
       - neovim
       - npm
       - pstree

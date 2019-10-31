@@ -88,6 +88,7 @@
     - {target: ~/.bash_it/custom/profile.bash, src: "{{ansible_env.PWD}}/config/bash/profile.bash"}
     - {target: ~/.bash_it/custom/terminal.bash, src: "{{ansible_env.PWD}}/config/bash/terminal.bash"}
     - {target: ~/.bash_it/custom/bosh.bash, src: "{{ansible_env.PWD}}/config/bash/bosh.bash"}
+    - {target: ~/.bash_it/custom/k8s_completion.bash, src: "{{ansible_env.PWD}}/config/bash/k8s_completion.bash"}
     - {target: ~/.git-authors, src: "{{ansible_env.PWD}}/config/.git-authors"}
     - {target: ~/.gitconfig-shared, src: "{{ansible_env.PWD}}/config/.gitconfig-shared"}
     - {target: ~/.hushlogin, src: "{{ansible_env.PWD}}/config/.hushlogin"}
