@@ -1,10 +1,11 @@
 authors:
   db: Danail Branekov; danail-branekov
   gs: Georgi Sabev; georgethebeatle
-  jn: Julia Nedialkova
+  jn: Julia Nedialkova; yulianedyalkova
   jz: Julian Friedman
   gc: Giuseppe Capizzi; gcapizzi
   kb: Kieron Browne; kbrowne
+  mn: Mario Nitchev; mnitchev
 email:
   domain: pivotal.io
 email_addresses:
@@ -12,3 +13,4 @@ email_addresses:
   gs: georgethebeatle@gmail.com
   jn: julianedialkova@hotmail.com
   jz: julz.friedman@uk.ibm.com
+  mn: marionitchev@gmail.com
