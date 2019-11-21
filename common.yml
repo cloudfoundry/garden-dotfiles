@@ -31,6 +31,9 @@
   - name: install grootsay
     command: go get -u github.com/fouralarmfire/grootsay
 
+  - name: install spruce
+    command: go get -u github.com/geofffranks/spruce/...
+
   # - name: enable bash-it plugins
   #   shell: source ~/.bash_profile && bash-it enable plugin {{item}}
   #   args:
