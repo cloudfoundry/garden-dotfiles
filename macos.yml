@@ -13,6 +13,9 @@
     - git-duet/tap
     - neovim/neovim
 
+  - name: unlink terraform
+    command: brew unlink terraform
+
   - name: install Homebrew packages
     homebrew:
       name:
@@ -53,7 +56,7 @@
       - shellcheck
       - ssh-copy-id
       - sshuttle
-      - terraform
+      - tfenv
       - tig
       - tmate
       - tmux
@@ -83,3 +86,9 @@
 
   - name: install neovim pip3 package
     pip: name=neovim state=latest executable=/usr/local/bin/pip3
+
+  - name: install terraform 0.12.18
+    command: tfenv install 0.12.18
+
+  - name: use terraform 0.12.18
+    command: tfenv use 0.12.18
