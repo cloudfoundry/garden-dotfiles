@@ -87,5 +87,5 @@
   - name: install neovim pip3 package
     pip: name=neovim state=latest executable=/usr/local/bin/pip3
 
-  - name: pin terraform 0.12.18
-    shell: tfenv install 0.12.18 && tfenv use 0.12.18
+  - name: pin terraform 0.12.19
+    shell: tfenv install 0.12.19 && tfenv use 0.12.19
