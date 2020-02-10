@@ -78,8 +78,22 @@
     - iterm2
     - shiftit
     - vagrant
-    - virtualbox
     - ngrok
+
+  - name: get virtualbox version
+    command: VBoxManage -v
+    register: vbox_version
+    failed_when: vbox_version.rc != 0 and vbox_version.rc != 2
+
+  - name: uninstall virtualbox if not 6.0
+    homebrew_cask:
+      name: virtualbox
+      state: absent
+    when: vbox_version.rc == 0 and not vbox_version.stdout.startswith("6.0.")
+
+  - name: install virtualbox 6.0
+    command: brew cask install https://raw.githubusercontent.com/caskroom/homebrew-cask/91241febe442803aa2e645acfbebda374a23a1ea/Casks/virtualbox.rb
+    when: vbox_version.rc == 2 or not vbox_version.stdout.startswith("6.0.")
 
   - name: install neovim pip package
     pip: name=neovim state=latest
