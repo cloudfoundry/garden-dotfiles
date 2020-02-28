@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -ue
+
+if [ "$#" -ne "1" ]; then
+    echo "usage: $0 <concourse-build-url>" >&2
+    exit 1
+fi
+
+# url like https://garden.ci.cf-app.com/teams/main/pipelines/main/jobs/guardian-nerdful/builds/68
+
+buildArgs="$(echo "$1" | awk -F"/" '{print "-j " $7 "/" $9 " -b " $11}')"
+
+fly -t garden-ci w $buildArgs | less -S -R

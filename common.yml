@@ -83,6 +83,7 @@
     - {target: ~/.ruby-version, src: "{{ansible_env.PWD}}/config/.ruby-version"}
     - {target: ~/.tmate.conf, src: "{{ansible_env.PWD}}/config/tmate.conf"}
     - {target: ~/.tmux.conf, src: "{{ansible_env.PWD}}/config/tmux.conf"}
+    - {target: ~/bin/ciout, src: "{{ansible_env.PWD}}/executables/ciout"}
     - {target: ~/bin/load-key, src: "{{ansible_env.PWD}}/executables/load-key"}
     - {target: ~/bin/gotta-push-em-all, src: "{{ansible_env.PWD}}/executables/gotta-push-em-all.sh"}
     - {target: ~/bin/get-groot-env.sh, src: "{{ansible_env.PWD}}/executables/get-groot-env.sh"}
