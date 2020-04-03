@@ -9,6 +9,4 @@ fi
 
 # url like https://garden.ci.cf-app.com/teams/main/pipelines/main/jobs/guardian-nerdful/builds/68
 
-buildArgs="$(echo "$1" | awk -F"/" '{print "-j " $7 "/" $9 " -b " $11}')"
-
-fly -t garden-ci w $buildArgs | less -S -R
+fly -t garden-ci w --url "$1" | less -S -R
